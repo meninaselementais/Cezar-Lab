@@ -1,0 +1,75 @@
+version: 2
+name: MAUTRIX - Claude + Codex
+nodes:
+  - id: start
+    type: start
+  - id: work
+    name: Claude - Desenvolvedor
+    type: agent
+    prompt: "{{task}}"
+    runner: claude
+  - id: end
+    type: end
+    status: failed
+  - id: review
+    name: Codex - Revisor
+    type: agent
+    prompt: |-
+      Você é o revisor técnico do projeto.
+
+      TAREFA ORIGINAL:
+      {{task}}
+
+      RELATÓRIO DO CLAUDE:
+      {{nodes.work.summary}}
+
+      Revise o trabalho realizado pelo Claude Code.
+
+      Verifique:
+      1. Se a tarefa solicitada foi atendida.
+      2. Se existem erros de programação.
+      3. Se as alterações introduzem regressões.
+      4. Se os testes são suficientes.
+      5. Se existem problemas de segurança.
+
+      Examine os arquivos modificados no workspace, se estiverem acessíveis.
+
+      Não modifique arquivos.
+      Não execute commits, push ou comandos destrutivos.
+
+      Apresente:
+      - APROVADO ou REPROVADO.
+      - Problemas encontrados.
+      - Correções recomendadas.
+      - Resumo final.
+    runner: codex
+  - id: end-2
+    type: end
+    status: success
+edges:
+  - from: start.next
+    to: work
+  - from: review.done
+    to: end
+  - from: work.failed
+    to: end
+  - from: work.done
+    to: review
+  - from: review.failed
+    to: end-2
+layout:
+  start:
+    x: 32
+    y: 40
+  work:
+    x: 188
+    y: 40
+  end:
+    x: 253.33333333333331
+    y: 135
+  review:
+    x: 575.6666666666666
+    y: 203.33333333333331
+  end-2:
+    x: 665.3333333333334
+    y: 306.66666666666663
