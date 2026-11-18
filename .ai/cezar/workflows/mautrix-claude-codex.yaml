@@ -50,13 +50,13 @@ edges:
   - from: start.next
     to: work
   - from: review.done
-    to: end
+    to: end-2
   - from: work.failed
     to: end
   - from: work.done
     to: review
   - from: review.failed
-    to: end-2
+    to: end
 layout:
   start:
     x: 32
@@ -65,11 +65,11 @@ layout:
     x: 188
     y: 40
   end:
-    x: 253.33333333333331
+    x: 253
     y: 135
   review:
-    x: 575.6666666666666
-    y: 203.33333333333331
+    x: 576
+    y: 203
   end-2:
-    x: 665.3333333333334
-    y: 306.66666666666663
+    x: 665
+    y: 307
